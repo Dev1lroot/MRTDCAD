@@ -1,0 +1,12 @@
+.sidebar{
+	right: 0px;
+	top: 16px;
+	bottom: 0px;
+	width: 300px;
+	background-color: #222;
+    color: #666;
+}
+.settings{
+	overflow-y: scroll;
+	max-height: calc(100vh - 64px);
+}

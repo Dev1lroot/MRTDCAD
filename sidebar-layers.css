@@ -1,0 +1,60 @@
+.sidebar .layers{
+    display: block;
+    width: 100%;
+    overflow-y: scroll;
+    margin-bottom: 10px;
+    max-height: 300px;
+}
+.sidebar .layers > *{
+    display: block;
+    width: 100%;
+}
+.layers .preview{
+    display: block;
+    width: 48px;
+    height: 48px;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: relative;
+}
+.layers .layer-control{
+    display: flex;
+    background-color: #FFFFFF10;
+    border-radius: 8px;
+    margin-bottom: 2px;
+}
+.layers-wrapper{
+    width: 100%;
+    display: block;
+    padding: 10px;
+}
+.layers .layer-control button{
+    background-color: transparent;
+    color: #999;
+    border: none;
+    line-height:48px;
+    width:24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.layers .layer-control button:hover{
+    color: #FFF;
+    transition: all 0.3s;
+}
+.layers-wrapper > button{
+    height: 32px;
+    line-height: 32px;
+    background-color: #FFFFFF10;
+    border-radius: 8px;
+    margin-bottom: 2px;
+    border: unset;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    color: #999;
+}
+.layers-wrapper > button:hover{
+    color: #FFF;
+}

@@ -1,0 +1,67 @@
+.welcome{
+    background-color: #FFFFFF10;
+    padding: 10px;
+    color: #999;
+    width: 800px;
+    border-radius: 8px;
+}
+.welcome .cards{
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.welcome .cards a{
+    cursor: pointer;
+    display: block;
+    background-color: #FFFFFF00;
+    border-radius: 10px;
+    height: 192px;
+    width: calc((100% - 16px) / 3);
+    color: #FFF;
+    outline: none;
+    background-position: center;
+    background-size: 70%;
+    background-repeat: no-repeat;
+    transition: all 0.3s;
+    text-align: center;
+    padding-top: 10px;
+    overflow: hidden;
+    background-color: #000;
+    position: relative;
+}
+.welcome .cards .wip{
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	text-align: center;
+	padding: 4px 6px;
+	border-radius: 6px;
+	background-color: #AF0000;
+	color:#FFF;
+    font-size: 10px;
+}
+.welcome .cards a:hover{
+    background-size: 100%;
+    transition: all 0.3s;
+}
+.welcome .buttons a{
+    width: 100%;
+    border-radius: 4px;
+    background-color: #FFFFFF10;
+    color: #CCC;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    display: block;
+    line-height: 42px;
+    padding: 0px 10px;
+    position: relative;
+    cursor: pointer;
+}
+.welcome .cards span{
+    display: block;
+    transition: all 0.1s;
+}
+.welcome .cards a:hover span{
+    margin-top: -32px;
+    transition: all 0.1s;
+}

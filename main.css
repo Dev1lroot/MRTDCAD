@@ -1,0 +1,187 @@
+@font-face {
+  font-family: "OCRB";
+  src: url("OCRB.otf")
+}
+@font-face {
+  font-family: "Frutiger";
+  src: url("Frutiger.otf")
+}
+@font-face {
+	font-family: "dotted";
+	src: url("passport-dotted.ttf");
+}
+.dotted{
+	position: absolute !important;
+	font-family: dotted;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	width: 20mm;
+}
+.dotted p{
+	font-family: dotted;
+	width: max-content;
+	height: max-content;
+	rotate: -90deg;
+	font-size: 30px;
+}
+*{
+	padding: 0px;
+	margin: 0px;
+	box-sizing: border-box;
+	font-family: Frutiger,sans-serif;
+	list-style-type: none;
+}
+.software{
+	display: flex;
+	max-width: calc(100% - 16px);
+	width: 1200px;
+	margin: 0px auto;
+}
+.settings{
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+}
+.settings .param{
+	position: relative;
+	display: block;
+	padding: 8px;
+}
+.param *{
+	width: 100%;
+	font-size: 10px;
+}
+input,select{
+	line-height: 32px;
+	height: 32px;
+	padding: 0px 8px;
+	border: 1px solid #999;
+}
+center{
+	width: 100% !important;
+}
+.card{
+	padding: 2mm;
+	width: 85.60mm;
+	height: 54mm;
+	border: 1px solid #000;
+	margin-bottom: 4px;
+	border-radius: 4mm;
+	overflow: hidden;
+	background-size: cover;
+}
+.card .photo{
+	width: 30mm;
+	height: 40mm;
+}
+input[type="file"]{
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	width: 100%;
+	height: auto;
+	opacity: 0;
+}
+.controls{
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	width: 64px;
+}
+.centered{
+	display: block;
+	margin: 0px auto;
+	transform: translate(-0%,-50%);
+	margin-top: calc(50vh - 16px);
+	width: max-content;
+}
+.card .field p{
+	letter-spacing: -2px;
+}
+button{
+	height: 32px;
+	line-height: 32px;
+}
+input,select,button{
+		font-size: 15px !important;
+}
+.grid{
+	margin: 10px;
+}
+.grid .row{
+	border-top: 1px solid #000;
+}
+.grid .row:last-child{
+	border-bottom: 1px solid #000;
+}
+.grid .column{
+	padding: 4px;
+	border-left: 1px solid #000;
+}
+.grid .column:last-child{
+	border-right: 1px solid #000;
+}
+.grid .row{
+	display: flex;
+}
+.flex-center{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.ir-20{
+	filter: grayscale(100%) brightness(200%) contrast(200%);
+}
+.ir-15{
+	filter: grayscale(100%) brightness(150%) contrast(200%);
+}
+.ir-10{
+	filter: grayscale(100%) brightness(100%) contrast(200%);
+}
+.button{
+	position: inherit !important;
+	width: auto;
+	height: 32px;
+	background-color: #EEE;
+	opacity: 1;
+}
+.workspace{
+	flex-grow: 1;
+	width: max-content;
+	overflow: scroll;
+	height: calc(100vh - 32px);
+	background-color: #111;
+}
+.layout{
+	display: flex;
+	height: calc(100vh - 32px);
+}
+.background, .layer{
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	background-size: cover;
+	background-position: center;
+}
+.draggable .row{
+	position: relative;
+}
+.draggable .row:hover::after{
+	content: " ";
+	width: 2mm;
+	height: var(--icao-mrtd-vis-height);
+	left: calc(-2mm);
+	top: 0px;
+	position: absolute;
+	cursor: move;
+	background-color: #999;
+}

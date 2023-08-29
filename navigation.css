@@ -1,0 +1,42 @@
+.navigation{
+	height: 32px;
+	list-style-type: 32px;
+	background-color: #222;
+	z-index: 1000;
+}
+.navigation nav > ul{
+	display: flex;
+	color: #999;
+}
+.navigation nav > ul > li{
+	position: relative;
+}
+.navigation nav > ul > li > ul{
+	display: none;
+	position: absolute;
+	background-color: #222;
+	z-index: 1000;
+	min-width: 150px;
+}
+.navigation a{
+	color: #999;
+	display: block;
+	position: relative;
+	line-height: 32px;
+	padding: 0px 10px;
+	cursor: pointer;
+}
+.navigation a input{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	bottom: 0px;
+	right: 0px;
+}
+.navigation nav > ul > li:hover > ul{
+	display: block;
+}
+.navigation a:hover{
+	color: #FFF;
+	background-color: #333;
+}

@@ -1,0 +1,179 @@
+*{
+    --icao-mrtd-width: 125mm;
+    --icao-mrtd-height: 88mm;
+    --icao-mrtd-safezone: 3.2mm;
+    --icao-mrtd-vis-height: 6.35mm;
+    --icao-mrtd-photo-width: 35mm;
+    --icao-mrtd-photo-height: 45mm;
+    --icao-mrtd-border-radius: 3.18mm;
+}
+.mrtd{
+	min-width: var(--icao-mrtd-width);
+	border-radius: var(--icao-mrtd-border-radius);
+	overflow: hidden;
+	border: 1px solid #000;
+	width: max-content;
+    position: relative;
+}
+.mrtd > div{
+	width: var(--icao-mrtd-width);
+	height: var(--icao-mrtd-height);
+	padding: var(--icao-mrtd-safezone);
+	position: relative;
+}
+.mrtd > div:first-child{
+	border-bottom: 1px dashed #000;
+}
+.row{
+	display: flex;
+	width: 100%;
+}
+.mrz{
+	height: 23.2mm;
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	z-index: 1000;
+}
+.mrz *{
+	width: 100%;
+	font-family: "OCRB";
+	text-align: center;
+	font-size: 3.55mm;
+	line-height: 22px;
+}
+.photo{
+	position: relative;
+	width: var(--icao-mrtd-photo-width);
+	height: var(--icao-mrtd-photo-height);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+.aside-photo{
+    margin-right: 2mm;
+}
+.title, .field{
+	width: 100%;
+	height: var(--icao-mrtd-vis-height);
+	display: flex;
+	flex-wrap: wrap;
+}
+.field *{
+	width: 100%;
+	flex-grow: 1;
+}
+.field label{
+	font-size: 6px;
+}
+.field p{
+	font-family: "OCRB";
+	font-size: 13px;
+}
+.placeholder{
+	cursor: pointer;
+}
+.placeholder:hover{
+	outline: 1px dashed #000;
+}
+.vis{
+	width: 100%;
+	display: flex;
+}
+.vis > div:last-child{
+	flex-grow: 1;
+	display: flex;
+	flex-wrap: wrap;
+}
+.mrtd .background, .mrtd .background .layer{
+	position: absolute;
+	top:0px;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	background-size: cover;
+	background-position: center;
+    height: calc(var(--icao-mrtd-height) * 2);
+}
+.mrv .background, .mrv .background .layer{
+	position: absolute;
+	top:0px;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	background-size: cover;
+	background-position: center;
+    height: 80mm;
+}
+.page{
+    z-index: 1000;
+}
+.mrv-a{
+	width: 105mm;
+	height: 74mm;
+	border-radius: var(--icao-mrtd-border-radius);
+	overflow: hidden;
+	border: 1px solid #000;
+	position: relative;
+}
+.mrv-b{
+	width: 120mm;
+	height: 80mm;
+	border-radius: var(--icao-mrtd-border-radius);
+	overflow: hidden;
+	border: 1px solid #000;
+	position: relative;
+}
+.mrv-b .content{
+	z-index: 1000;
+	position: inherit;
+	height: 80mm;
+	padding: var(--icao-mrtd-safezone);
+}
+.mrv-a .content{
+	z-index: 1000;
+	position: inherit;
+	height: 74mm;
+	padding: var(--icao-mrtd-safezone);
+}
+.mrv-a *{
+	--icao-mrtd-photo-width: 30mm !important;
+    --icao-mrtd-photo-height: 40mm !important;
+}
+.mrv-a .mrz *{
+	font-size: 3.1mm;
+}
+.cr79{
+	--card-width: 83.9mm;
+	--card-height: 52mm;
+}
+.cr80{
+	--card-width: 85.6mm;
+	--card-height: 54mm;
+}
+.cr100{
+	--card-width: 98.6mm;
+	--card-height: 66.8mm;
+}
+.card{
+	width: var(--card-width);
+	height: var(--card-height);
+	background-color: #FFF;
+	position: relative;
+	overflow: hidden;
+}
+.v-card{
+	width: var(--card-height);
+	height: var(--card-width);
+	background-color: #FFF;
+	position: relative;
+	overflow: hidden;
+}
+.card .content, .v-card .content{
+	position: relative;
+	z-index: 1000;
+}

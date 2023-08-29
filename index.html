@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Passport Editor | ICAO-9303 MRTD Editor</title>
+	<link rel="stylesheet" type="text/css" href="main.css">
+	<link rel="stylesheet" type="text/css" href="icao-9303.css">
+	<link rel="stylesheet" type="text/css" href="navigation.css">
+	<link rel="stylesheet" type="text/css" href="sidebar.css">
+	<link rel="stylesheet" type="text/css" href="sidebar-tabs.css">
+	<link rel="stylesheet" type="text/css" href="sidebar-layers.css">
+	<link rel="stylesheet" type="text/css" href="welcome.css">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="vue.js"></script>
+	<script type="text/javascript" src="sortable.min.js"></script>
+	<script type="text/javascript" src="vuedraggable.umd.min.js"></script>
+</head>
+<body>
+	<div id="main">
+		<section class="navigation">
+			<nav>
+				<ul>
+					<li><a>File</a>
+						<ul>
+							<li><a>New</a></li>
+							<li><a><input type="file" id="load-from-file" @change="load($event)">Open</a></li>
+							<li><a @click="save()">Save</a></li>
+							<li><a @click="print()">Print</a></li>
+						</ul>
+					</li>
+					<li><a>Edit</a></li>
+					<li><a>View</a></li>
+					<li><a>Go</a></li>
+					<li><a>Window</a></li>
+					<li><a>Help</a>
+						<ul>
+							<li><a href="https://www.patreon.com/PassportDesigner">Patreon</a></li>
+							<li><a href="https://dev1lroot.com/">Contact Developer</a></li>
+							<li><a href="https://www.icao.int/publications/pages/publication.aspx?docnum=9303">Documentation</a></li>
+						</ul>
+					</li>
+				</ul>
+			</nav>
+		</section>
+		<section class="layout">
+			<div class="workspace" id="printable">
+				<div class="welcome centered" v-if="render == 'welcome'">
+					<div>MRTD Designer</div>
+					<div class="buttons">
+						<a><input type="file" id="load-from-file-at-welcome" @change="load($event,'passport')">Open existing project</a>
+					</div>
+					<div class="cards">
+						<a @click="prepareLayout('passport')" style="background-image: url(modes/passport.png);">
+							<span>Passport / Travel Document</span>
+						</a>
+						<a @no-click="prepareLayout('military-id')" style="background-image: url(modes/smartcard.png);">
+							<span>Military ID Card</span>
+							<div class="wip">W.I.P</div>
+						</a>
+						<a @click="prepareLayout('id-card')" style="background-image: url(modes/idcard.png);">
+							<span>Civil ID Card</span>
+						</a>
+						<a @no-click="prepareLayout('driver-license')" style="background-image: url(modes/driver.png);">
+							<span>Driver License</span>
+							<div class="wip">W.I.P</div>
+						</a>
+						<a @click="prepareLayout('visa')" style="background-image: url(modes/visa.png);">
+							<span>VISA</span>
+						</a>
+						<a @no-click="prepareLayout('credit-card')" style="background-image: url(modes/credit.png);">
+							<span>Credit Card</span>
+							<div class="wip">W.I.P</div>
+						</a>
+					</div>
+					<div>
+						<br>
+						Donate:<br>
+						<a href="https://www.patreon.com/PassportDesigner">Patreon</a><br>
+						ETH 0x88448c1b5B02B6915Ac768005303dd9cBb09128B
+					</div>
+				</div>
+				<div class="centered" v-if="render == 'id-card'">
+					<div class="card" id="card-1" :class="style.variant">
+						<vis-component v-bind:page="0" v-bind:photo_is_allowed="true"></vis-component>
+						<background-component v-bind:page="1"></background-component>
+					</div>
+					<div class="card" id="card-2" :class="style.variant" v-if="render == 'id-card'">
+						<vis-component v-bind:page="1" v-bind:photo_is_allowed="false"></vis-component>
+						<mrz-component v-bind:rows="generate()"></mrz-component>
+						<background-component v-bind:page="2"></background-component>
+					</div>
+				</div>
+				<div class="mrv centered" id="visa" :class="style.display+' '+style.variant" v-if="render == 'visa'">
+					<vis-component v-bind:page="0" v-bind:photo_is_allowed="true"></vis-component>
+					<mrz-component v-bind:rows="generate()"></mrz-component>
+					<background-component v-bind:page="0"></background-component>
+				</div>
+				<div class="mrtd centered" id="passport" :class="style.display" v-if="render == 'passport'">
+					<div class="page">
+						<div class="dotted" :style="style.perforation.position+': 0px;width:'+style.perforation.height+'mm;'">
+							<p :style="`font-size: ${style.perforation.fontSize}mm;`">{{substr(select("number"),9,"").toLowerCase()}}</p>
+						</div>
+					</div>
+					<div class="page" v-if="page == 0">
+						<vis-component v-bind:page="0" v-bind:photo_is_allowed="true" v-bind:document_header="true"></vis-component>
+						<mrz-component v-bind:rows="generate()"></mrz-component>
+					</div>
+					<div v-else class="page">
+						<div class="dotted" :style="style.perforation.position+': 0px;width:'+style.perforation.height+'mm;transform: scale(1,-1);'">
+							<p :style="`font-size: ${style.perforation.fontSize}mm;`">{{substr(select("number"),9,"").toLowerCase()}}</p>
+						</div>
+					</div>
+					<background-component v-bind:page="0"></background-component>
+				</div>
+			</div>
+			<aside class="panel sidebar">
+				<div class="tabs">
+					<nav>
+						<a v-for="option,id in tabs" @click="settings = option.code" :class="(settings == option.code) ? 'active' : ''">{{option.name}}</a>
+					</nav>
+				</div>
+				<div class="settings" v-if="settings == 'pages'">
+					<div class="field">
+						<label>The displayed pages:</label>
+						<p>{{page + 1}}..{{page + 2}}</p>
+						<button @click="page += 1">Next &gt;</button>
+						<button @click="page -= 1">&lt; Back</button>
+					</div>
+				</div>
+				<div class="settings" v-if="settings == 'design'">
+					<div class="param">
+						<label>Display Mode:</label>
+						<select v-model="style.personalization" @change="style.personalization = Number(style.personalization)">
+							<option value="1">Personalized</option>
+							<option value="0">Template</option>
+						</select>
+					</div>
+					<div class="param" v-if="render == 'visa'">
+						<label>Visa Formfactor</label>
+						<select v-model="style.variant">
+							<option value="mrv-a">MRV-A</option>
+							<option value="mrv-b">MRV-B</option>
+						</select>
+					</div>
+					<div class="param" v-if="render == 'id-card'">
+						<label>Card Formfactor</label>
+						<select v-model="style.variant">
+							<option value="cr79">CR79</option>
+							<option value="cr80">CR80</option>
+							<option value="cr100">CR100</option>
+						</select>
+					</div>
+					<div class="param">
+						<label>Labels Color</label>
+						<input type="color" v-model="style.labels.color">
+					</div>
+					<div class="param">
+						<label>Labels Font Size</label>
+						<input type="range" min="1" max="12" step="0.1" v-model="style.labels.fontSize">
+					</div>
+					<div class="param">
+						<label>Perforation position</label>
+						<select v-model="style.perforation.position">
+							<option>left</option>
+							<option>right</option>
+						</select>
+					</div>
+					<div class="param">
+						<label>Perforation area height</label>
+						<input type="range" min="10" max="30" step="0.1" v-model="style.perforation.height">
+					</div>
+					<div class="param">
+						<label>Perforation size (mm)</label>
+						<input type="range" min="7" max="9" step="0.1" v-model="style.perforation.fontSize">
+					</div>
+					<div class="param">
+						<label>Light</label>
+						<select v-model="style.display">
+							<option>normal</option>
+							<option>ir-10</option>
+							<option>ir-15</option>
+							<option>ir-20</option>
+						</select>
+					</div>
+				</div>
+				<div class="settings" v-if="settings == 'layers'">
+					<div class="layer-settings" v-if="background[selected_layer] != undefined">
+						<div class="param">
+							<label>Opacity:</label>
+							<input type="number" v-model="background[selected_layer].opacity" step="0.1">
+						</div>
+						<div class="param">
+							<label>Hue:</label>
+							<input type="number" v-model="background[selected_layer].hue"  step="1">
+						</div>
+						<div class="param">
+							<label>Brightness:</label>
+							<input type="number" v-model="background[selected_layer].brightness"  step="0.1">
+						</div>
+						<div class="param">
+							<label>Contrast:</label>
+							<input type="number" v-model="background[selected_layer].contrast"  step="0.1">
+						</div>
+						<div class="param">
+							<label>Blur:</label>
+							<input type="number" v-model="background[selected_layer].blur"  step="1">
+						</div>
+						<div class="param">
+							<label>Page bound:</label>
+							<button v-if="background[selected_layer].pageBound" @click="background[selected_layer].pageBound = !background[selected_layer].pageBound">Unbind</button>
+							<button v-if="!background[selected_layer].pageBound" @click="background[selected_layer].pageBound = !background[selected_layer].pageBound">Bind</button>
+						</div>
+						<div class="param" v-if="background[selected_layer].pageBound">
+							<label>Page number:</label>
+							<input type="number" v-model="background[selected_layer].pageNumber">
+						</div>
+					</div>
+					<div class="layers-wrapper">
+						<button @click="createLayer()"><i class="fa-solid fa-plus"></i> Create Layer</button>
+						<draggable v-model="background" class="layers">
+							<div v-for="layer,id in background" class="layer-control">
+								<a class="preview" :style="'background-image: url('+layer.image+')'"><input type="file" :id="'layer-input-'+id" @input="getFile('#layer-input-'+id,function(e){layer.image = e})"></a>
+								<button v-if="layer.active"  @click="layer.active = !layer.active"><i class="fa-solid fa-eye"></i></button>
+								<button v-if="!layer.active" @click="layer.active = !layer.active"><i class="fa-solid fa-eye-slash"></i></button>
+								<button @click="selected_layer = id"><i class="fa-solid fa-gear"></i></button>
+							</div>
+						</draggable>
+					</div>
+				</div>
+				<div class="settings" v-if="settings == 'fields'">
+					<div class="param">
+						<label>Mandatory Fields:</label>
+					</div>
+					<a class="param" v-for="f in fields" @click="properties(f)">{{f.param}}</a>
+				</div>
+				<div class="settings" v-if="settings == 'properties' && selected.param != undefined">
+					<div class="param">
+						<label>Title:</label>
+						<input type="text" v-model="selected.title">
+					</div>
+					<div class="param">
+						<label>Value:</label>
+						<div v-if="Array.isArray(selected.setup)" class="value">
+							<select v-model="selected.value">
+								<option v-for="o in selected.setup">{{o}}</option>
+							</select>
+						</div>
+						<div v-else>
+							<input :type="selected.setup" v-model="selected.value" class="value">
+						</div>
+					</div>
+					<div class="param">
+						<label>Width:<sup>mm</sup></label>
+						<input type="text" v-model="selected.width">
+					</div>
+					<div class="param" v-if="selected.setup == 'date'">
+						<label>Format:</label>
+						<select v-model="selected.format">
+							<option>YYYY-MM-DD</option>
+							<option>YYYY.MM.DD</option>
+							<option>YYYY MM DD</option>
+							<option>DD MMM YY</option>
+							<option>DD MMM /MMM YY</option>
+						</select>
+					</div>
+				</div>
+			</aside>
+		</section>
+	</div>
+	<script type="text/javascript" src="main.js"></script>
+</body>
+</html>
