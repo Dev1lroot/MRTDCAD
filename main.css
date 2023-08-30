@@ -1,14 +1,14 @@
 @font-face {
   font-family: "OCRB";
-  src: url("OCRB.otf")
+  src: url("fonts/OCRB.otf")
 }
 @font-face {
   font-family: "Frutiger";
-  src: url("Frutiger.otf")
+  src: url("fonts/Frutiger.otf")
 }
 @font-face {
 	font-family: "dotted";
-	src: url("passport-dotted.ttf");
+	src: url("fonts/passport-dotted.ttf");
 }
 .dotted{
 	position: absolute !important;
@@ -42,15 +42,11 @@
 	width: 1200px;
 	margin: 0px auto;
 }
-.settings{
-	display: flex;
-	flex-wrap: wrap;
-	gap: 4px;
-}
 .settings .param{
 	position: relative;
 	display: block;
 	padding: 8px;
+	width: 100%;
 }
 .param *{
 	width: 100%;

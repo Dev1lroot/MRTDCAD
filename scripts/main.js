@@ -1,50 +1,3 @@
-Vue.component('mrz-component', {
-    props: ['rows'],
-    template: `<div class="placeholder mrz" title="Machine Readable Zone">
-		<div>
-			<center v-for="row in rows" v-if="row.length > 0" :style="($parent.style.personalization) ? '' : 'opacity: 0;'">{{row}}</center>
-		</div>
-	</div>`,});
-Vue.component('vis-component', {
-    props: ['page','photo_is_allowed','document_header'],
-    template: `
-	<div class="content">
-		<div class="placeholder title" v-if="$parent.render_mode == 1" @click="$parent.properties($parent.fields[0])">
-			<center>{{$parent.select("countryname")}}</center>
-		</div>
-		<div class="vis">
-			<div class="aside-photo" v-if="photo_is_allowed">
-				<div class="row" v-if="document_header">
-					<div class="placeholder field" @click="$parent.properties($parent.fields[1])">{{$parent.select("document")}}</div>
-				</div>
-				<div class="row">
-					<div class="flex-center photo" :style="($parent.style.personalization) ? '' : 'opacity: 0;'">
-						<div class="placeholder photo" :style="'background-image:url('+$parent.photo+')'">
-							<input type="file" id="gp" v-on:input="$parent.getFile('#gp',function(e){$parent.photo = e})">
-						</div>
-					</div>
-				</div>
-			</div>
-			<draggable class="fields draggable" v-model="$parent.layout[page]">
-				<draggable :list="$parent.layout[page][rowid]" group="vis" v-model="$parent.layout[page][rowid]" class="row" v-if="$parent.layout.length > 0" v-for="row,rowid in $parent.layout[page]">
-					<div v-for="col in row" :title="col.title" @click="$parent.properties(col)" :style="'width:'+col.width+'mm;'" class="placeholder field">
-						<label :style="'color: '+$parent.style.labels.color+'; font-size: '+$parent.style.labels.fontSize+'px'">{{col.title}}</label>
-						<p :style="($parent.style.personalization) ? '' : 'opacity: 0;'">{{col.value}}</p>
-					</div>
-				</draggable>
-			</draggable>
-		</div>
-	</div>`,});
-Vue.component('background-component',{
-	props: ["page"],
-	template: `<div class="background">
-		<div class="layer" 
-			v-for="layer,id in $parent.background" 
-			:style="\`z-index:\`+(993 - id)+\`;background-image:url(\${layer.image});filter: brightness(\${layer.brightness})contrast(\${layer.contrast})blur(\${layer.blur}px)hue-rotate(\${layer.hue}deg);opacity:\${layer.opacity};\`" 
-			v-if="layer.active && (layer.pageBound == false || (layer.pageBound == true && layer.pageNumber == page))">
-		</div>
-		<div class="layer" style="background-color: #FFF;"></div>
-	</div>`})
 var root = new Vue({
 	el: "#main",
 	data: {
@@ -71,14 +24,25 @@ var root = new Vue({
 				fontSize: 8,
 			}
 		},
-		tabs:[
-			{name:"Properties",code:"properties"},
-			{name:"Design",code:"design"},
-			// {name:"Fields",code:"fields"},
-			// {name:"Pages",code:"pages",wlist:["passport"]},
-			{name:"Layers",code:"layers"},
-			// {name:"Layout",code:"layout"},
-		],
+		ui:{
+			sidebar: {
+				enabled: true,
+				tabs: {
+					data:[
+						{name:"Properties",code:"properties"},
+						{name:"Design",code:"design"},
+						// {name:"Fields",code:"fields"},
+						// {name:"Pages",code:"pages",wlist:["passport"]},
+						{name:"Layers",code:"layers"},
+						// {name:"Layout",code:"layout"},
+					]
+				},
+				dropdown:{
+					layerSettings: true,
+					layers: true,
+				}
+			}
+		},
 		photo: ``,
 		selected_layer: 0,
 		createLayer()

@@ -1,0 +1,33 @@
+.dropdown, .dropdown-header, .dropdown-container{
+    width: 100%;
+    box-sizing: border-box;
+    transition: all 0.3s;
+}
+.dropdown-header{
+    width: 100%;
+    display: block;
+    cursor: pointer;
+    background-color: #00000010;
+    position: relative;
+    height: 20px;
+    font-size: 13px;
+    line-height: 20px;
+    padding-left: 20px;
+}
+.dropdown-header i{
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    display: block;
+    transition: all 0.3s;
+    text-align: center;
+    line-height: 20px;
+}
+.dropdown.visible .dropdown-header i{
+    rotate: -180deg;
+}
+.dropdown.hidden .dropdown-container{
+    height: 0px;
+}

@@ -1,0 +1,29 @@
+input,button,select,textarea{
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+    border: unset !important;
+    background-color: #00000050;
+    color: #FFF;
+    padding: 0px 8px;
+    border-radius: 3px;
+    transition: all 0.3s;
+    outline: 1px solid #FFFFFF00;
+}
+input[type="color"]
+{
+    padding: 0px;
+    width: 32px;
+}
+button,select,input[type="button"],input[type="submit"]{
+    background-color: #3E3E3E; /* Thank you firefox */
+    cursor: pointer;
+}
+input:not([type="range"]):hover,button:hover,select:hover,textarea:hover{
+    outline: 1px solid #FFFFFF80;
+    transition: all 0.3s;
+}
+input:not([type="range"]):focus,button:focus,select:focus,textarea:focus{
+    outline: 1px solid #FFFFFF;
+    transition: all 0.3s;
+}

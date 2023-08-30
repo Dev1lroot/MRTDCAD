@@ -3,7 +3,9 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
 	<title>Passport Editor | ICAO-9303 MRTD Editor</title>
+	
 	<link rel="stylesheet" type="text/css" href="main.css">
 	<link rel="stylesheet" type="text/css" href="icao-9303.css">
 	<link rel="stylesheet" type="text/css" href="navigation.css">
@@ -12,10 +14,18 @@
 	<link rel="stylesheet" type="text/css" href="sidebar-layers.css">
 	<link rel="stylesheet" type="text/css" href="welcome.css">
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-	<script type="text/javascript" src="jquery.min.js"></script>
-	<script type="text/javascript" src="vue.js"></script>
-	<script type="text/javascript" src="sortable.min.js"></script>
-	<script type="text/javascript" src="vuedraggable.umd.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="forms.css">
+	<link rel="stylesheet" type="text/css" href="dropdown.css">
+
+	<script type="text/javascript" src="scripts/jquery.min.js"></script>
+	<script type="text/javascript" src="scripts/vue.js"></script>
+	<script type="text/javascript" src="scripts/sortable.min.js"></script>
+	<script type="text/javascript" src="scripts/vuedraggable.umd.min.js"></script>
+
+	<script type="text/javascript" src="scripts/components/background.js"></script>
+	<script type="text/javascript" src="scripts/components/mrz.js"></script>
+	<script type="text/javascript" src="scripts/components/vis.js"></script>
+	<script type="text/javascript" src="scripts/components/dropdown.js"></script>
 </head>
 <body>
 	<div id="main">
@@ -33,7 +43,11 @@
 					<li><a>Edit</a></li>
 					<li><a>View</a></li>
 					<li><a>Go</a></li>
-					<li><a>Window</a></li>
+					<li><a>Window</a>
+						<ul>
+							<li><a @click="ui.sidebar.enabled = !ui.sidebar.enabled">Sidebar</a></li>
+						</ul>
+					</li>
 					<li><a>Help</a>
 						<ul>
 							<li><a href="https://www.patreon.com/PassportDesigner">Patreon</a></li>
@@ -115,10 +129,10 @@
 					<background-component v-bind:page="0"></background-component>
 				</div>
 			</div>
-			<aside class="panel sidebar">
+			<aside class="panel sidebar" v-if="ui.sidebar.enabled">
 				<div class="tabs">
 					<nav>
-						<a v-for="option,id in tabs" @click="settings = option.code" :class="(settings == option.code) ? 'active' : ''">{{option.name}}</a>
+						<a v-for="option,id in ui.sidebar.tabs.data" @click="settings = option.code" :class="(settings == option.code) ? 'active' : ''">{{option.name}}</a>
 					</nav>
 				</div>
 				<div class="settings" v-if="settings == 'pages'">
@@ -130,63 +144,69 @@
 					</div>
 				</div>
 				<div class="settings" v-if="settings == 'design'">
-					<div class="param">
-						<label>Display Mode:</label>
-						<select v-model="style.personalization" @change="style.personalization = Number(style.personalization)">
-							<option value="1">Personalized</option>
-							<option value="0">Template</option>
-						</select>
-					</div>
-					<div class="param" v-if="render == 'visa'">
-						<label>Visa Formfactor</label>
-						<select v-model="style.variant">
-							<option value="mrv-a">MRV-A</option>
-							<option value="mrv-b">MRV-B</option>
-						</select>
-					</div>
-					<div class="param" v-if="render == 'id-card'">
-						<label>Card Formfactor</label>
-						<select v-model="style.variant">
-							<option value="cr79">CR79</option>
-							<option value="cr80">CR80</option>
-							<option value="cr100">CR100</option>
-						</select>
-					</div>
-					<div class="param">
-						<label>Labels Color</label>
-						<input type="color" v-model="style.labels.color">
-					</div>
-					<div class="param">
-						<label>Labels Font Size</label>
-						<input type="range" min="1" max="12" step="0.1" v-model="style.labels.fontSize">
-					</div>
-					<div class="param">
-						<label>Perforation position</label>
-						<select v-model="style.perforation.position">
-							<option>left</option>
-							<option>right</option>
-						</select>
-					</div>
-					<div class="param">
-						<label>Perforation area height</label>
-						<input type="range" min="10" max="30" step="0.1" v-model="style.perforation.height">
-					</div>
-					<div class="param">
-						<label>Perforation size (mm)</label>
-						<input type="range" min="7" max="9" step="0.1" v-model="style.perforation.fontSize">
-					</div>
-					<div class="param">
-						<label>Light</label>
-						<select v-model="style.display">
-							<option>normal</option>
-							<option>ir-10</option>
-							<option>ir-15</option>
-							<option>ir-20</option>
-						</select>
-					</div>
+					<dropdown v-bind:title="'Mode'">
+						<div class="param">
+							<label>Display Mode:</label>
+							<select v-model="style.personalization" @change="style.personalization = Number(style.personalization)">
+								<option value="1">Personalized</option>
+								<option value="0">Template</option>
+							</select>
+						</div>
+						<div class="param">
+							<label>Light</label>
+							<select v-model="style.display">
+								<option>normal</option>
+								<option>ir-10</option>
+								<option>ir-15</option>
+								<option>ir-20</option>
+							</select>
+						</div>
+						<div class="param" v-if="render == 'visa'">
+							<label>Visa Formfactor</label>
+							<select v-model="style.variant">
+								<option value="mrv-a">MRV-A</option>
+								<option value="mrv-b">MRV-B</option>
+							</select>
+						</div>
+						<div class="param" v-if="render == 'id-card'">
+							<label>Card Formfactor</label>
+							<select v-model="style.variant">
+								<option value="cr79">CR79</option>
+								<option value="cr80">CR80</option>
+								<option value="cr100">CR100</option>
+							</select>
+						</div>
+					</dropdown>
+					<dropdown v-bind:title="'Labels'">
+						<div class="param">
+							<label>Labels Color</label>
+							<input type="color" v-model="style.labels.color">
+						</div>
+						<div class="param">
+							<label>Labels Font Size</label>
+							<input type="range" min="1" max="12" step="0.1" v-model="style.labels.fontSize">
+						</div>
+					</dropdown>
+					<dropdown v-bind:title="'Perforation'" v-if="render == 'passport'">
+						<div class="param">
+							<label>Perforation position</label>
+							<select v-model="style.perforation.position">
+								<option>left</option>
+								<option>right</option>
+							</select>
+						</div>
+						<div class="param">
+							<label>Perforation area height</label>
+							<input type="range" min="10" max="30" step="0.1" v-model="style.perforation.height">
+						</div>
+						<div class="param">
+							<label>Perforation size (mm)</label>
+							<input type="range" min="7" max="9" step="0.1" v-model="style.perforation.fontSize">
+						</div>
+					</dropdown>
 				</div>
 				<div class="settings" v-if="settings == 'layers'">
-					<div class="layer-settings" v-if="background[selected_layer] != undefined">
+					<dropdown v-bind:title="'Layer Settings'" v-if="background[selected_layer] != undefined">
 						<div class="param">
 							<label>Opacity:</label>
 							<input type="number" v-model="background[selected_layer].opacity" step="0.1">
@@ -216,8 +236,8 @@
 							<label>Page number:</label>
 							<input type="number" v-model="background[selected_layer].pageNumber">
 						</div>
-					</div>
-					<div class="layers-wrapper">
+					</dropdown>
+					<dropdown v-bind:title="'Layers'" v-bind:container_class="'layers-wrapper'">
 						<button @click="createLayer()"><i class="fa-solid fa-plus"></i> Create Layer</button>
 						<draggable v-model="background" class="layers">
 							<div v-for="layer,id in background" class="layer-control">
@@ -227,7 +247,7 @@
 								<button @click="selected_layer = id"><i class="fa-solid fa-gear"></i></button>
 							</div>
 						</draggable>
-					</div>
+					</dropdown>
 				</div>
 				<div class="settings" v-if="settings == 'fields'">
 					<div class="param">
@@ -269,6 +289,6 @@
 			</aside>
 		</section>
 	</div>
-	<script type="text/javascript" src="main.js"></script>
+	<script type="text/javascript" src="scripts/main.js"></script>
 </body>
 </html>
