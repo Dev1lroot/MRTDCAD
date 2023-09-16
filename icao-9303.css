@@ -177,3 +177,58 @@
 	position: relative;
 	z-index: 1000;
 }
+.geneva-conventions-identification-card{
+	border-radius: 3.18mm;
+	padding: 2.5mm;
+	position: relative;
+}
+.geneva-conventions-identification-card .photo{
+	width: 25mm;
+	height: 35mm;
+}
+.geneva-conventions-identification-card .division .countryname, .geneva-conventions-identification-card .division .deputyname{
+	position: absolute;
+	font-style: italic;
+	font-size: 12px;
+	width: 100%;
+	left: 0px;
+	right: 0px;
+	text-align: center;
+	z-index: 1000;
+}
+.geneva-conventions-identification-card .division .deputyname{
+	bottom: 0px;
+}
+.geneva-conventions-identification-card .aside-pdf417{
+	display: flex;
+	gap: 2.5mm;
+}
+.geneva-conventions-identification-card .aside-pdf417 canvas{
+	width: 10mm;
+	height: 30mm;
+}
+.geneva-conventions-identification-card .footer{
+	font-size: 2.7mm;
+	text-align: center;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	line-height: 7mm;
+	font-family: sans-serif;
+	z-index: 10000;
+}
+.emv-chip{
+	position: absolute;
+	background-image: url(assets/chip.png);
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	z-index: 10000;
+	width: 12mm;
+	height: 13.5mm;
+}
+.v-card .emv-chip{
+	bottom: 8.5mm;
+	left: 18mm;
+}

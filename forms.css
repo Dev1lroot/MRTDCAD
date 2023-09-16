@@ -27,3 +27,14 @@ input:not([type="range"]):focus,button:focus,select:focus,textarea:focus{
     outline: 1px solid #FFFFFF;
     transition: all 0.3s;
 }
+textarea{
+    transition: none !important;
+    min-width: 100%;
+    max-width: 100%;
+    border-radius: 0px;
+    padding: 10px;
+    height: 300px;
+}
+pre{
+    padding: 10px;
+}

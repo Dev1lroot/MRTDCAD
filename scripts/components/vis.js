@@ -12,18 +12,19 @@ Vue.component('vis-component', {
 				</div>
 				<div class="row">
 					<div class="flex-center photo" :style="($parent.style.personalization) ? '' : 'opacity: 0;'">
-						<div class="placeholder photo" :style="'background-image:url('+$parent.photo+')'">
-							<input type="file" id="gp" v-on:input="$parent.getFile('#gp',function(e){$parent.photo = e})">
+						<div class="placeholder photo" :style="'background-image:url('+$parent.credentials.photo+')'">
+							<input type="file" id="gp" v-on:input="$parent.getFile('#gp',function(e){$parent.credentials.photo = e})">
 						</div>
 					</div>
 				</div>
 			</div>
-			<draggable class="fields draggable" v-model="$parent.layout[page]">
+			<draggable class="fields draggable" v-model="$parent.layout[page]" group="vis-row">
 				<draggable :list="$parent.layout[page][rowid]" group="vis" v-model="$parent.layout[page][rowid]" class="row" v-if="$parent.layout.length > 0" v-for="row,rowid in $parent.layout[page]">
-					<div v-for="col in row" :title="col.title" @click="$parent.properties(col)" :style="'width:'+col.width+'mm;'" class="placeholder field">
-						<label :style="'color: '+$parent.style.labels.color+'; font-size: '+$parent.style.labels.fontSize+'px'">{{col.title}}</label>
-						<p :style="($parent.style.personalization) ? '' : 'opacity: 0;'">{{col.value}}</p>
-					</div>
+					<parameter 
+						v-for="col in row" 
+						v-bind:param="col"
+						v-bind:global_styles="$parent.style"
+					></parameter>
 				</draggable>
 			</draggable>
 		</div>

@@ -181,3 +181,7 @@ input,select,button{
 	cursor: move;
 	background-color: #999;
 }
+.nearby{
+	display: flex;
+	gap: 10px;
+}

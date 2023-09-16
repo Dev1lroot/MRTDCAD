@@ -21,11 +21,15 @@
 	<script type="text/javascript" src="scripts/vue.js"></script>
 	<script type="text/javascript" src="scripts/sortable.min.js"></script>
 	<script type="text/javascript" src="scripts/vuedraggable.umd.min.js"></script>
+	<script type="text/javascript" src="scripts/pdf417-min.js"></script>
 
+	<script type="text/javascript" src="scripts/components/parameter.js"></script>
 	<script type="text/javascript" src="scripts/components/background.js"></script>
 	<script type="text/javascript" src="scripts/components/mrz.js"></script>
 	<script type="text/javascript" src="scripts/components/vis.js"></script>
 	<script type="text/javascript" src="scripts/components/dropdown.js"></script>
+	<script type="text/javascript" src="scripts/components/military.js"></script>
+	<script type="text/javascript" src="scripts/components/emv-chip.js"></script>
 </head>
 <body>
 	<div id="main">
@@ -69,9 +73,8 @@
 						<a @click="prepareLayout('passport')" style="background-image: url(modes/passport.png);">
 							<span>Passport / Travel Document</span>
 						</a>
-						<a @no-click="prepareLayout('military-id')" style="background-image: url(modes/smartcard.png);">
+						<a @click="prepareLayout('military-id')" style="background-image: url(modes/smartcard.png);">
 							<span>Military ID Card</span>
-							<div class="wip">W.I.P</div>
 						</a>
 						<a @click="prepareLayout('id-card')" style="background-image: url(modes/idcard.png);">
 							<span>Civil ID Card</span>
@@ -93,6 +96,26 @@
 						Donate:<br>
 						<a href="https://www.patreon.com/PassportDesigner">Patreon</a><br>
 						ETH 0x88448c1b5B02B6915Ac768005303dd9cBb09128B
+					</div>
+				</div>
+				<div class="centered" v-if="render == 'military-id'">
+					<div class="nearby">
+						<div class="v-card geneva-conventions-identification-card" id="card-1" :class="style.variant">
+							<military-component
+								v-bind:page="0"
+								v-bind:pdf417="generate()"
+								v-bind:photo_is_allowed="true"
+							></military-component>
+							<div class="footer">
+								Geneva Conventions Identification Card 
+							</div>
+							<emv-chip></emv-chip>
+							<background-component v-bind:page="1"></background-component>
+						</div>
+						<div class="v-card geneva-conventions-identification-card" id="card-2" :class="style.variant">
+							<military-component v-bind:page="1" v-bind:photo_is_allowed="false"></military-component>
+							<background-component v-bind:page="2"></background-component>
+						</div>
 					</div>
 				</div>
 				<div class="centered" v-if="render == 'id-card'">
@@ -143,6 +166,14 @@
 						<button @click="page -= 1">&lt; Back</button>
 					</div>
 				</div>
+				<div class="settings" v-if="settings == 'pdf417'">
+					<dropdown v-bind:title="'Pattern'">
+						<textarea v-model="credentials.pattern"></textarea>
+					</dropdown>
+					<dropdown v-bind:title="'Storage'">
+						<pre>{{ build_pdf417() }}</pre>
+					</dropdown>
+				</div>
 				<div class="settings" v-if="settings == 'design'">
 					<dropdown v-bind:title="'Mode'">
 						<div class="param">
@@ -168,7 +199,7 @@
 								<option value="mrv-b">MRV-B</option>
 							</select>
 						</div>
-						<div class="param" v-if="render == 'id-card'">
+						<div class="param" v-if="render == 'id-card' || render == 'military-id'">
 							<label>Card Formfactor</label>
 							<select v-model="style.variant">
 								<option value="cr79">CR79</option>

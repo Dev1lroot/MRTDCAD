@@ -43,7 +43,12 @@ var root = new Vue({
 				}
 			}
 		},
-		photo: ``,
+		credentials: {
+			photo: ``,
+			division: ``,
+			signature: ``,
+			pattern: `DSN{surname}\nDGN{names}\nDOB{date_of_birth}\nDOE{date_of_expiry}\nDN{id_number}`,
+		},
 		selected_layer: 0,
 		createLayer()
 		{
@@ -69,7 +74,7 @@ var root = new Vue({
 		},
 		save(){
 			const data = {
-				photo: this.photo,
+				credentials: this.credentials,
 				background: this.background,
 				style: this.style,
 				fields: this.fields,
@@ -182,10 +187,27 @@ var root = new Vue({
 				];
 				this.style.variant = 'cr80';
 			}
+			if(type == "military-id")
+			{
+				layout = [ //["date_of_birth|width:26","id-number|width:26"], //["sex|width:10","place_of_birth|width:42"],
+					[
+						["surname"],
+						["names"],
+						["date_of_issue|width:26"],
+						["date_of_expiry|width:26"]
+					],
+					[
+						["type|width:18","code|width:18","authority|width:45"],
+						["height|width:18","skin-color|width:18","signature|width:45"],
+						["blood_type|width:18","eye-color|width:18"]
+					]
+				];
+				this.style.variant = 'cr80';
+				this.ui.sidebar.tabs.data.push({name:"PDF417",code:"pdf417"});
+			}
 
 			// Layout processing
-			this.processLayout(layout)
-
+			this.processLayout(layout);
 			this.render = type;
 		},
 		parseLayoutMarker(marker)
@@ -248,6 +270,14 @@ var root = new Vue({
 				param:`document`,
 				width: 86,
 				setup:`text`,
+			},
+			{
+				title:`Deputy Name`,
+				value:`Null Forces`,
+				param:`deputyname`,
+				width: 86,
+				setup:`text`,
+				mandatory: true,
 			},
 			{
 				title:`Number of Entries`,
@@ -590,6 +620,49 @@ var root = new Vue({
 	            reader.readAsDataURL(file);
 	        }
 		},
+		build_pdf417()
+		{
+			var pattern = this.credentials.pattern;
+			var params  = pattern.match(/\{([^}]+)\}/g);
+			for(var param of params.map(match => match.slice(1, -1)))
+			{
+				console.log(param);
+				pattern = pattern.replace(`{${param}}`,this.select(param));
+			}
+			return pattern;
+		},
+		generate_pdf417()
+		{
+			var canvas = document.getElementById('pdf417');
+
+			if(canvas != null && canvas != undefined)
+			{
+
+				PDF417.init(this.build_pdf417());             
+
+				var barcode = PDF417.getBarcodeArray();
+
+				var bw = 5;
+				var bh = 5;
+
+				canvas.width  = bw * barcode['num_rows'];
+				canvas.height = bh * barcode['num_cols'];
+
+				var ctx = canvas.getContext('2d');                    
+
+				var y = 2;
+				for (var r = 2; r < barcode['num_cols']; ++r) {
+					var x = 2;
+					for (var c = 2; c < barcode['num_rows']; ++c) {
+						if (barcode['bcode'][c][r] == 1) {                        
+							ctx.fillRect(x, y, bw, bh);
+						}
+						x += bw;
+					}
+					y += bh;
+				}
+			}
+		},
 		print()
 		{
 			const elementToPrint = document.getElementById("printable");
@@ -613,7 +686,12 @@ var root = new Vue({
 		{
 			var mrz = ['','',''];
 			var chk = ['',''];
-
+			
+			if(this.render == "military-id")
+			{
+				this.generate_pdf417();
+				return "";
+			}
 			if(this.render == "passport")
 			{
 				// MRZ 0
