@@ -145,7 +145,7 @@ var root = new Vue({
 						comp.style = jd.style;
 						comp.layout = jd.layout;
 						comp.render = jd.render;
-						comp.credentials = this.credentials;
+						comp.credentials = jd.credentials;
 						console.log("Success!");
 					}
 				} catch (error) {
