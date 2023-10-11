@@ -50,6 +50,38 @@ var root = new Vue({
 			pattern: `DSN{surname}\nDGN{names}\nDOB{date_of_birth}\nDOE{date_of_expiry}\nDN{id_number}`,
 		},
 		selected_layer: 0,
+		createDialog(params)
+		{
+			this.dialog = params;
+			document.getElementById("dialog").showModal();
+		},
+		closeModal(){
+			document.getElementById("dialog").close();
+		},
+		dialog: {
+			type: "",
+			title: "",
+			onClose: function(){},
+			onConfirm: function(){},
+		},
+		removeLayer(id)
+		{
+			this.createDialog({
+				type: "confirm",
+				title: "Are you sure to remove this layer?",
+				onClose: function()
+				{
+					this.closeModal();
+				}
+				.bind(this),
+				onConfirm: function()
+				{
+					this.background.splice(id, 1);
+					this.closeModal();
+				}
+				.bind(this)
+			})
+		},
 		createLayer()
 		{
 			this.background = [{
@@ -110,10 +142,10 @@ var root = new Vue({
 					{
 						comp.fields = jd.fields;
 						comp.background = jd.background;
-						comp.photo = jd.photo;
 						comp.style = jd.style;
 						comp.layout = jd.layout;
 						comp.render = jd.render;
+						comp.credentials = this.credentials;
 						console.log("Success!");
 					}
 				} catch (error) {

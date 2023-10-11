@@ -16,6 +16,7 @@
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 	<link rel="stylesheet" type="text/css" href="forms.css">
 	<link rel="stylesheet" type="text/css" href="dropdown.css">
+	<link rel="stylesheet" type="text/css" href="dialog.css">
 
 	<script type="text/javascript" src="scripts/jquery.min.js"></script>
 	<script type="text/javascript" src="scripts/vue.js"></script>
@@ -30,9 +31,20 @@
 	<script type="text/javascript" src="scripts/components/dropdown.js"></script>
 	<script type="text/javascript" src="scripts/components/military.js"></script>
 	<script type="text/javascript" src="scripts/components/emv-chip.js"></script>
+	<script type="text/javascript" src="scripts/components/layer-preview.js"></script>
 </head>
 <body>
 	<div id="main">
+		<dialog id="dialog">
+			<button @click="dialog.onClose()" class="close"><i class="fa-solid fa-times"></i></button>
+			<div class="container" v-if="dialog.type == 'confirm'">
+				<div style="padding: 24px 32px;">{{dialog.title}}</div>
+				<div class="inline-buttons">
+					<button @click="dialog.onConfirm()">Confirm</button>
+					<button @click="dialog.onClose()"  >Cancel</button>
+				</div>
+			</div>
+		</dialog>
 		<section class="navigation">
 			<nav>
 				<ul>
@@ -272,10 +284,13 @@
 						<button @click="createLayer()"><i class="fa-solid fa-plus"></i> Create Layer</button>
 						<draggable v-model="background" class="layers">
 							<div v-for="layer,id in background" class="layer-control">
-								<a class="preview" :style="'background-image: url('+layer.image+')'"><input type="file" :id="'layer-input-'+id" @input="getFile('#layer-input-'+id,function(e){layer.image = e})"></a>
+								<layer-preview :layer="layer">
+									<input type="file" :id="'layer-input-'+id" @input="getFile('#layer-input-'+id,function(e){layer.image = e})">
+								</layer-preview>
 								<button v-if="layer.active"  @click="layer.active = !layer.active"><i class="fa-solid fa-eye"></i></button>
 								<button v-if="!layer.active" @click="layer.active = !layer.active"><i class="fa-solid fa-eye-slash"></i></button>
 								<button @click="selected_layer = id"><i class="fa-solid fa-gear"></i></button>
+								<button @click="removeLayer(id)"><i class="fa-solid fa-trash"></i></button>
 							</div>
 						</draggable>
 					</dropdown>
