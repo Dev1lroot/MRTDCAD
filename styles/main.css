@@ -1,15 +1,3 @@
-@font-face {
-  font-family: "OCRB";
-  src: url("../fonts/OCRB.otf")
-}
-@font-face {
-  font-family: "Frutiger";
-  src: url("../fonts/Frutiger.otf")
-}
-@font-face {
-	font-family: "dotted";
-	src: url("../fonts/passport-dotted.ttf");
-}
 .dotted{
 	position: absolute !important;
 	font-family: dotted;
