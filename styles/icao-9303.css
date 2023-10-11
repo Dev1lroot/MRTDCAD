@@ -220,7 +220,7 @@
 }
 .emv-chip{
 	position: absolute;
-	background-image: url(assets/chip.png);
+	background-image: url(../assets/chip.png);
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
