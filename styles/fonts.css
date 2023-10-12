@@ -1,12 +1,16 @@
 @font-face {
   font-family: "OCRB";
-  src: url("../fonts/OCRB.otf")
+  src: url("../fonts/OCRB.otf");
 }
 @font-face {
   font-family: "Frutiger";
-  src: url("../fonts/Frutiger.otf")
+  src: url("../fonts/Frutiger.otf");
 }
 @font-face {
     font-family: "dotted";
     src: url("../fonts/passport-dotted.ttf");
+}
+@font-face {
+  font-family: "DroidSansMono";
+  src: url("../fonts/DroidSansMono.ttf");
 }

@@ -6,16 +6,23 @@ var root = new Vue({
 		settings: 'properties',
 		render_mode: 1,
 		selected: {},
+		fonts: [
+			"OCRB",
+			"DroidSansMono"
+		],
 		style: {
 			personalization: true,
 			variant: 'mrv-a',
 			labels: {
 				color: `#000`,
 				fontSize: 6.0,
-				fontWeight: 1.0
+				fontWeight: 1.0,
+				fontFamily: 'Frutiger'
 			},
 			params: {
-				fontFamily: `ocrb`
+				fontFamily: `OCRB`,
+				fontSize: 13,
+				letterSpacing:0,
 			},
 			display: "normal",
 			perforation: {

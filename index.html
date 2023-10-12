@@ -219,14 +219,38 @@
 							</select>
 						</div>
 					</dropdown>
-					<dropdown v-bind:title="'Labels'">
+					<dropdown v-bind:title="'VIS Labels'">
 						<div class="param">
 							<label>Labels Color</label>
 							<input type="color" v-model="style.labels.color">
 						</div>
 						<div class="param">
-							<label>Labels Font Size</label>
+							<label>Font Size</label>
 							<input type="range" min="1" max="12" step="0.1" v-model="style.labels.fontSize">
+						</div>
+						<div class="param">
+							<label>Font Family</label>
+							<select v-model="style.labels.fontFamily">
+								<option>Arial</option>
+								<option>Frutiger</option>
+								<option v-for="f in fonts">{{f}}</option>
+							</select>
+						</div>
+					</dropdown>
+					<dropdown v-bind:title="'VIS Properties'">
+						<div class="param">
+							<label>Font Family</label>
+							<select v-model="style.params.fontFamily">
+								<option v-for="f in fonts">{{f}}</option>
+							</select>
+						</div>
+						<div class="param">
+							<label>Font Letter Spacing ({{style.params.letterSpacing}})</label>
+							<input type="range" min="0" max="10" step="0.5" v-model="style.params.letterSpacing">
+						</div>
+						<div class="param" style="display: none;">
+							<label>Font Size</label>
+							<input type="range" min="13" max="17" step="1" v-model="style.params.fontSize">
 						</div>
 					</dropdown>
 					<dropdown v-bind:title="'Perforation'" v-if="render == 'passport'">

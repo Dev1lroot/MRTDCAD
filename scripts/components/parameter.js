@@ -19,12 +19,16 @@ Vue.component('parameter', {
         labelStyle(){
             return {
                 color: this.global_styles.labels.color,
-                fontSize: this.global_styles.labels.fontSize+'px'
+                fontSize: this.global_styles.labels.fontSize+'px',
+                fontFamily: (this.global_styles.labels.hasOwnProperty("fontFamily")) ? this.global_styles.labels.fontFamily : "Frutiger",
             }
         },
         valueStyle(){
             return {
-                opacity: (this.global_styles.personalization) ? 1 : 0
+                opacity: (this.global_styles.personalization) ? 1 : 0,
+                fontFamily: this.global_styles.params.fontFamily,
+                fontSize: (this.global_styles.params.hasOwnProperty("fontSize")) ? this.global_styles.params.fontSize + "px" : "13px",
+                letterSpacing: (this.global_styles.params.hasOwnProperty("letterSpacing")) ? this.global_styles.params.letterSpacing + "px" : "0px"
             }
         }
     }
