@@ -705,7 +705,7 @@ var root = new Vue({
 				var printable = elementToPrint.innerHTML;
 				printable = printable.replace("centered","");
 			  const printWindow = window.open('', '_blank');
-			  printWindow.document.write('<html><head><title>MRTD Print</title><link rel="stylesheet" type="text/css" href="main.css"><link rel="stylesheet" type="text/css" href="icao-9303.css"></head><body>');
+			  printWindow.document.write('<html><head><title>MRTD Print</title><link rel="stylesheet" type="text/css" href="styles.css"></head><body>');
 			  printWindow.document.write(`<div class="printable">${printable}</div>`);
 			  printWindow.document.write('</body></html>');
 			  printWindow.document.close();
@@ -715,6 +715,10 @@ var root = new Vue({
 			} else {
 			  console.error('Element with the specified ID was not found.');
 			}
+		},
+		escapeName: function (name)
+		{
+			return name.toUpperCase().replace(/\,/g,"<<").replace(/ /g,"<").replace(/[^A-Za-z\-]/g,"");
 		},
 		generate: function()
 		{
@@ -731,8 +735,8 @@ var root = new Vue({
 				// MRZ 0
 				var type = this.substrEnd(this.select("type"),2,"<");
 				var code = this.substrEnd(this.select("code"),3,"<");
-				var sn   = this.select("surname").replace(/ /g,"<");
-				var name = this.select("names").replace(/ /g,"<");
+				var sn   = this.escapeName(this.select("surname"));
+				var name = this.escapeName(this.select("names"));
 
 				mrz[0] = type+code+sn+"<<"+name;
 				mrz[0] =  this.substrEnd(mrz[0],44,"<");
@@ -761,18 +765,11 @@ var root = new Vue({
 				// MRZ 0
 				var type = this.substrEnd(this.select("type"),2,"<");
 				var code = this.substrEnd(this.select("code"),3,"<");
-				var sn   = this.select("surname").replace(/ /g,"<");
-				var name = this.select("names").replace(/ /g,"<");
-				var fullname = this.select("fullname").replace(/ /g,"<");
+				var sn   = this.escapeName(this.select("surname"));
+				var name = this.escapeName(this.select("names"));
+				var fullname = this.escapeName(this.select("fullname"));
 				
-				if(fullname.includes(","))
-				{
-					mrz[0] = type+code+fullname.split(",")[0]+"<<"+fullname.split(",")[1];
-				}
-				else
-				{
-					mrz[0] = type+code+fullname;
-				}
+				mrz[0] = type+code+fullname;
 				mrz[0] = this.substrEnd(mrz[0],44,"<");
 
 				// MRZ 1
@@ -799,8 +796,8 @@ var root = new Vue({
 			{
 				var type = this.substrEnd(this.select("type"),2,"<");
 				var code = this.substrEnd(this.select("code"),3,"<");
-				var sn   = this.select("surname").replace(/ /g,"<");
-				var name = this.select("names").replace(/ /g,"<");
+				var sn   = this.escapeName(this.select("surname"));
+				var name = this.escapeName(this.select("names"));
 				var number = this.substrEnd(this.select("id-number"),9,"<");
 				var chkn   = this.checkDigit(number).slice(-1);
 				var birthd = this.dateMRZ(this.select("date_of_birth"));
