@@ -52,6 +52,13 @@ var root = new Vue({
 		selected_layer: 0,
 		createDialog(params)
 		{
+			if(!params.hasOwnProperty("onClose")) params.onClose = function(){
+				this.closeModal();
+			}.bind(this)
+			if(!params.hasOwnProperty("onConfirm")) params.onConfirm = function(){
+				this.closeModal();
+			}.bind(this)
+
 			this.dialog = params;
 			document.getElementById("dialog").showModal();
 		},
@@ -69,11 +76,6 @@ var root = new Vue({
 			this.createDialog({
 				type: "confirm",
 				title: "Are you sure to remove this layer?",
-				onClose: function()
-				{
-					this.closeModal();
-				}
-				.bind(this),
 				onConfirm: function()
 				{
 					this.background.splice(id, 1);

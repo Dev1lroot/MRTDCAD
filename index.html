@@ -27,11 +27,14 @@
 	<div id="main">
 		<dialog id="dialog">
 			<button @click="dialog.onClose()" class="close"><i class="fa-solid fa-times"></i></button>
-			<div class="container" v-if="dialog.type == 'confirm'">
+			<div class="container">
 				<div style="padding: 24px 32px;">{{dialog.title}}</div>
-				<div class="inline-buttons">
+				<div class="inline-buttons" v-if="dialog.type == 'confirm'">
 					<button @click="dialog.onConfirm()">Confirm</button>
 					<button @click="dialog.onClose()"  >Cancel</button>
+				</div>
+				<div class="inline-buttons" v-if="dialog.type == 'information'">
+					<button @click="dialog.onClose()">Ok</button>
 				</div>
 			</div>
 		</dialog>
@@ -96,8 +99,14 @@
 					<div>
 						<br>
 						Donate:<br>
-						<a href="https://www.patreon.com/PassportDesigner">Patreon</a><br>
-						ETH 0x88448c1b5B02B6915Ac768005303dd9cBb09128B
+						<div class="donate">
+							<a href="https://www.patreon.com/PassportDesigner">
+								<i class="fa-brands fa-patreon"></i>
+							</a>
+							<a @click="createDialog({title:'ETH 0x88448c1b5B02B6915Ac768005303dd9cBb09128B',type:'information'})">
+								<i class="fa-brands fa-ethereum"></i>
+							</a>
+						</div>
 					</div>
 				</div>
 				<div class="centered" v-if="render == 'military-id'">

@@ -65,3 +65,23 @@
     margin-top: -32px;
     transition: all 0.1s;
 }
+.welcome .donate{
+    display: flex;
+    gap: 10px;
+}
+.welcome .donate a{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 48px;
+    height: 48px;
+    max-width: 48px;
+    color: #999;
+    cursor: pointer;
+    font-size: 25px;
+    transition: all 0.3s;
+}
+.welcome .donate a:hover{
+    color: #FFF;
+    font-size: 36px;
+}
