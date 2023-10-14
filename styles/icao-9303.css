@@ -74,6 +74,40 @@
 	font-family: "OCRB";
 	font-size: 13px;
 }
+.field-horizontal{
+	display: flex;
+	flex-wrap: nowrap !important;
+	align-items: center;
+	box-sizing: border-box;
+}
+.field-horizontal label{
+	width: 5mm !important;
+	max-width: 5mm !important;
+	min-width: 5mm !important;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+.field-horizontal p{
+	width: 100%;
+	flex-grow: 1;
+	line-height: var(--icao-mrtd-vis-height);
+	box-sizing: border-box;
+}
+.field-nolabel{
+	display: flex;
+	flex-wrap: nowrap !important;
+	align-items: center;
+	box-sizing: border-box;
+}
+.field-nolabel label{
+	display: none !important;
+}
+.field-nolabel p{
+	width: 100%;
+	flex-grow: 1;
+	line-height: var(--icao-mrtd-vis-height);
+	box-sizing: border-box;
+}
 .placeholder{
 	cursor: pointer;
 }

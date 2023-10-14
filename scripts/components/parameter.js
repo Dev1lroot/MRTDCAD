@@ -1,7 +1,7 @@
 Vue.component('parameter', {
     props: ["param","global_styles"],
     template: `
-	<div class="placeholder field" :style="primaryStyle" :title="param.title" @click="properties()">
+	<div class="placeholder field" :class="'field-'+fieldClass" :style="primaryStyle" :title="param.title" @click="properties()">
         <label :style="labelStyle">{{param.title}}</label>
         <p :style="valueStyle">{{param.value}}</p>
     </div>`,
@@ -15,6 +15,9 @@ Vue.component('parameter', {
             return {
                 width: this.param.width+'mm',
             }
+        },
+        fieldClass(){
+            return this.global_styles.vis.class;
         },
         labelStyle(){
             return {

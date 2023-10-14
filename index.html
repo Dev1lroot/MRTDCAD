@@ -13,6 +13,7 @@
 	<script type="text/javascript" src="scripts/sortable.min.js"></script>
 	<script type="text/javascript" src="scripts/vuedraggable.umd.min.js"></script>
 	<script type="text/javascript" src="scripts/pdf417-min.js"></script>
+	<script type="text/javascript" src="scripts/html-to-image.js"></script>
 
 	<script type="text/javascript" src="scripts/components/parameter.js"></script>
 	<script type="text/javascript" src="scripts/components/background.js"></script>
@@ -234,6 +235,14 @@
 								<option>Arial</option>
 								<option>Frutiger</option>
 								<option v-for="f in fonts">{{f}}</option>
+							</select>
+						</div>
+						<div class="param">
+							<label>Style</label>
+							<select v-model="style.vis.class">
+								<option value="horizontal">Horizontal Wrap</option>
+								<option value="vertical">Vertical Wrap</option>
+								<option value="nolabel">No Labels</option>
 							</select>
 						</div>
 					</dropdown>

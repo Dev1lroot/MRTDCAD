@@ -24,6 +24,9 @@ var root = new Vue({
 				fontSize: 13,
 				letterSpacing:0,
 			},
+			vis:{
+				class: "vertical"
+			},
 			display: "normal",
 			perforation: {
 				position: "right",
@@ -112,6 +115,10 @@ var root = new Vue({
 		{
 			this.settings = 'properties';
 			this.selected = property;
+		},
+		export()
+		{
+
 		},
 		save(){
 			const data = {
@@ -725,7 +732,11 @@ var root = new Vue({
 		},
 		escapeName: function (name)
 		{
-			return name.toUpperCase().replace(/\,/g,"<<").replace(/ /g,"<").replace(/[^A-Za-z\-]/g,"");
+			let filtered_name = name.toUpperCase()
+			while(filtered_name.includes("  ")) filtered_name = filtered_name.replace(/(  )/g," ");
+			
+			filtered_name = filtered_name.replace(/( , |, | ,|,)/g,"<<").replace(/ /g,"<").replace(/[^A-Za-z\-\<]/g,"");
+			return filtered_name;
 		},
 		generate: function()
 		{
